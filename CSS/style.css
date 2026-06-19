@@ -1,0 +1,155 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #252526;
+    color: #ffffff;
+}
+
+header {
+    background-color: #1E1E1E;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px solid dodgerblue;
+}
+
+header h1 {
+    color: #f39c12;
+    font-size: 36px;
+}
+
+#app-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- Panel de Controles --- */
+#panel-controles {
+    background-color: #3d3d3d;
+    padding: 25px;
+    border-radius: 15px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #b3b3b3;
+    font-size: 14px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 2px solid #555;
+    background-color: #f5f5f5;
+    color: #333;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+.input-group input:focus{
+    outline: none;
+    border-color: dodgerblue;
+}
+
+.acciones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-primary { background-color: #0078d7; color: white; }
+.btn-primary:hover { background-color: #005a9e; }
+.btn-danger { background-color: #d13438; color: white; }
+.btn-danger:hover { background-color: #a80000; }
+
+.resumen {
+    margin-top: 40px;
+    text-align: right;
+}
+
+.numero-verde {
+    display: block;
+    color: #2ecc71;
+    font-size: 48px;
+    font-weight: bold;
+}
+
+/* --- Panel del Tráiler --- */
+#panel-trailer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cabina-trailer, .puertas-trailer {
+    background-color: #c0392b;
+    color: white;
+    width: 320px;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.cabina-trailer { border-radius: 20px 20px 0 0; }
+.puertas-trailer { border-radius: 0 0 5px 5px; background-color: #555; }
+
+/* La magia del Grid */
+.trailer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(13, 60px);
+    gap: 4px;
+    background-color: #e6e6e6;
+    padding: 8px;
+    width: 320px;
+    border-left: 4px solid #333;
+    border-right: 4px solid #333;
+}
+
+.tarima {
+    background-color: #d9d9d9;
+    border: 1px solid #999;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+.tarima strong {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 2px;
+    word-break: break-word;
+}

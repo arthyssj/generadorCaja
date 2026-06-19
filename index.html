@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Caja DSV</title>
+    <link rel="stylesheet" href="/CSS/style.css">
+</head>
+<body>
+    <header>
+        <h1>Generador de Caja DSV</h1>
+    </header>
+
+    <main id="app-container">
+        <section id="panel-controles">
+            <div class="input-group">
+                <label for="inputCaja">Caja</label>
+                <input type="text" id="inputCaja" placeholder="Escanea o ingresa el número de caja" autofocus>
+            </div>
+            <div class="input-group">
+                <label for="inputMaterial">Material</label>
+                <input type="text" id="inputMaterial" placeholder="Escanea número de parte">
+            </div>
+            <div class="input-group">
+                <label for="inputCantidad">Cantidad</label>
+                <input type="number" id="inputCantidad" placeholder="Escanea o ingresa cantidad">
+            </div>
+
+            <div class="acciones">
+                <button id="btnExportar" class="btn-primary">Exportar</button>
+                <button id="btnCancelar" class="btn-danger">Cancelar</button>
+            </div>
+
+            <div class="resumen">
+                <h2>Total Tarimas</h2>
+                <span id="contadorTarimas" class="numero-verde">0</span>
+            </div>
+        </section>
+
+        <section id="panel-trailer">
+            <div class="cabina-trailer">Frente del Tráiler</div>
+            <div id="mapa-trailer" class="trailer-grid">
+                </div>
+            <div class="puertas-trailer">Puertas</div>
+        </section>
+    </main>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <script src="/JS/script.js"></script>
+</body>
+</html>
