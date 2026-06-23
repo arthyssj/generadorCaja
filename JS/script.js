@@ -10,9 +10,47 @@ const inputCantidad = document.getElementById('inputCantidad');
 const mapaTrailer = document.getElementById('mapa-trailer');
 const contadorTarimas = document.getElementById('contadorTarimas');
 
+// --- NUEVA FUNCIÓN: ENCARGADA DE DIBUJAR TODO EL TRÁILER ---
+function renderizarTrailer() {
+    // 1. Limpiar por completo el contenedor visual para volverlo a armar
+    mapaTrailer.innerHTML = '';
+    
+    // 2. Sincronizar el contador global con el tamaño real del arreglo
+    totalTarimas = datosTrailer.length;
+    contadorTarimas.innerText = totalTarimas;
+    
+    // 3. Recorrer el arreglo de datos y fabricar los cuadritos en el Grid
+    datosTrailer.forEach((tarima, index) => {
+        // Corrección automática de posición (por si borramos una intermedia, los números se reajustan de 1 a N)
+        tarima.Posición_Tráiler = index + 1;
+        
+        // Crear el elemento visual
+        const nuevaTarima = document.createElement('div');
+        nuevaTarima.className = 'tarima';
+        nuevaTarima.innerHTML = `
+            <button class="btn-eliminar-tarima" title="Eliminar esta tarima">×</button>
+            <strong>${tarima.Número_Material}</strong>
+            <span>${tarima.Cantidad_Piezas} pcs</span>
+        `;
+        
+        // ASIGNAR EVENTO DE ELIMINACIÓN A LA "X"
+        const btnEliminar = nuevaTarima.querySelector('.btn-eliminar-tarima');
+        btnEliminar.addEventListener('click', function() {
+            // Borramos el elemento del arreglo usando su índice actual
+            datosTrailer.splice(index, 1);
+            
+            // ¡Magia! Volvemos a renderizar para que la pantalla se actualice sola
+            renderizarTrailer();
+        });
+        
+        // Agregar al mapa del tráiler
+        mapaTrailer.appendChild(nuevaTarima);
+    });
+}
+
 // --- LÓGICA DE ESCÁNER (AUTO-FOCUS) ---
 
-// 1. Escanear Caja -> Salta a Material
+// Escanear Caja de trailer o ingresar
 inputCaja.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         e.preventDefault();
@@ -22,7 +60,7 @@ inputCaja.addEventListener('keypress', function(e) {
     }
 });
 
-// 2. Escanear Material -> Salta a Cantidad
+// Escanear Material 
 inputMaterial.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         e.preventDefault();
@@ -32,7 +70,9 @@ inputMaterial.addEventListener('keypress', function(e) {
     }
 });
 
-// 3. Escanear Cantidad -> Procesa, Dibuja y Regresa a Material
+
+
+// Escanear Cantidad: Procesa, Dibuja y Regresa a Material
 inputCantidad.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
         e.preventDefault();
@@ -43,39 +83,24 @@ inputCantidad.addEventListener('keypress', function(e) {
         // Validar campos vacíos
         if (!material || !cantidad) return;
 
-        // Validar límite físico
-        if (totalTarimas >= MAX_CAPACIDAD) {
-            alert("¡ALTO! La caja del tráiler está llena (28 tarimas máximo).");
+       // Validar límite físico usando el tamaño real del array
+        if (datosTrailer.length >= MAX_CAPACIDAD) {
+            alert(`¡ALTO! La caja del tráiler está llena (${MAX_CAPACIDAD} tarimas máximo).`);
             inputMaterial.value = '';
             inputCantidad.value = '';
             inputMaterial.focus();
             return;
         }
 
-        // --- PROCESAMIENTO DE DATOS ---
-        totalTarimas++;
-
-        // Guardar para el Excel (Ideal para Power Query)
+        // Guardar los datos limpios
         datosTrailer.push({
-            "Posición_Tráiler": totalTarimas,
+            "Posición_Tráiler": datosTrailer.length + 1,
             "Número_Material": material,
             "Cantidad_Piezas": parseInt(cantidad)
         });
 
-        // --- ACTUALIZACIÓN VISUAL ---
-        // Crear el div de la tarima
-        const nuevaTarima = document.createElement('div');
-        nuevaTarima.className = 'tarima';
-        nuevaTarima.innerHTML = `
-            <strong>${material}</strong>
-            <span>${cantidad} pcs</span>
-        `;
-
-        // CSS Grid lo acomodará automáticamente en zigzag
-        mapaTrailer.appendChild(nuevaTarima);
-
-        // Actualizar el número verde
-        contadorTarimas.innerText = totalTarimas;
+        // Llamar a nuestra función de dibujo
+        renderizarTrailer();
 
         // Limpiar para el siguiente ciclo del escáner
         inputMaterial.value = '';
@@ -84,7 +109,7 @@ inputCantidad.addEventListener('keypress', function(e) {
     }
 });
 
-// --- LÓGICA DE EXPORTACIÓN (EXCEL LOCAL) ---
+// --- LÓGICA DE EXPORTACIÓN Excel ---
 document.getElementById('btnExportar').addEventListener('click', function() {
     if (datosTrailer.length === 0) {
         alert("No hay datos para exportar. Escanea al menos una tarima.");
@@ -100,21 +125,21 @@ document.getElementById('btnExportar').addEventListener('click', function() {
     const nombreSugerido = `Caja-${numCaja}-${anio}-${mes}-${dia}.xlsx`;
 
     try {
-        // --- HOJA 1: MAPA VISUAL (Para imprimir / Operadores) ---
+        // --- HOJA 1: MAPA VISUAL ---
         // Construimos una matriz de filas y columnas
         const matrizMapa = [];
         
-        // Fila 1: Cabecera visual
+        // Cabecera visual
         matrizMapa.push(["=== FRENTE DEL TRÁILER ===", "=== FRENTE DEL TRÁILER ==="]);
 
-        // Crear la estructura vacía de 13 filas x 2 columnas
+        // Crear la estructura vacía de 14 filas x 2 columnas
         for (let i = 0; i < 14; i++) {
             matrizMapa.push([`(Vacío)`, `(Vacío)`]);
         }
 
         // Llenar las coordenadas exactas con los datos escaneados
         datosTrailer.forEach(tarima => {
-            const index = tarima.Posición_Tráiler - 1; // Índice de 0 a 25
+            const index = tarima.Posición_Tráiler - 1; // Índice de 0 a 27
             
             // Cálculos matemáticos simples para saber la celda exacta
             const filaExcel = Math.floor(index / 2) + 1; // +1 porque la fila 0 es el Frente
@@ -124,7 +149,7 @@ document.getElementById('btnExportar').addEventListener('click', function() {
             matrizMapa[filaExcel][columnaExcel] = `[T-${tarima.Posición_Tráiler}] ${tarima.Número_Material} | ${tarima.Cantidad_Piezas} pcs`;
         });
 
-        // Fila Final: Puertas
+        // Puertas
         matrizMapa.push(["=== PUERTAS ===", "=== PUERTAS ==="]);
 
         // Convertir la matriz a hoja de Excel
@@ -134,7 +159,7 @@ document.getElementById('btnExportar').addEventListener('click', function() {
         hojaMapa['!cols'] = [{ wch: 35 }, { wch: 35 }];
 
 
-        // --- HOJA 2: DATOS TABULARES (Para Power Query) ---
+        // --- HOJA 2: DATOS TABULARES ---
         const hojaDatos = XLSX.utils.json_to_sheet(datosTrailer);
 
 
