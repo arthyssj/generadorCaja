@@ -126,7 +126,7 @@ button {
 .trailer-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(13, 60px);
+    grid-template-rows: repeat(14, 60px);
     gap: 4px;
     background-color: #e6e6e6;
     padding: 8px;
