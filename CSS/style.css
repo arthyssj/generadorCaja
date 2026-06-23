@@ -145,6 +145,7 @@ button {
     align-items: center;
     font-size: 13px;
     box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    position: relative;
 }
 
 .tarima strong {
@@ -152,4 +153,27 @@ button {
     display: block;
     margin-bottom: 2px;
     word-break: break-word;
+}
+.btn-eliminar-tarima{
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    display: none;
+    transition: color 0.2s;
+}
+
+.btn-eliminar-tarima:hover{
+    color: #c0392b;
+}
+
+.tarima:hover .btn-eliminar-tarima{
+    display: block;
 }
