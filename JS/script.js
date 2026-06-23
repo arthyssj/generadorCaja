@@ -78,10 +78,16 @@ inputCantidad.addEventListener('keypress', function(e) {
         e.preventDefault();
 
         const material = inputMaterial.value.trim().toUpperCase();
-        const cantidad = inputCantidad.value.trim();
+        const cantidad = parseInt(inputCantidad.value.trim());
+        
 
         // Validar campos vacíos
-        if (!material || !cantidad) return;
+        if (!material || isNaN(cantidad) || cantidad <= 0){
+            alert("Cantidad invalida")
+            inputCantidad.focus;
+            return;
+
+        } ;
 
        // Validar límite físico usando el tamaño real del array
         if (datosTrailer.length >= MAX_CAPACIDAD) {
