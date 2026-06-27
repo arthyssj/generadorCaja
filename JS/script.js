@@ -1,4 +1,4 @@
-// --- ESTADO DE LA APLICACIÓN ---
+// --- ESTADO DE LA APLICACIÓN GENERADOR BASE---
 const MAX_CAPACIDAD = 28;
 let totalTarimas = 0;
 let datosTrailer = []; // Array en memoria para exportar a Excel
